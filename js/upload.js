@@ -259,10 +259,7 @@
                     if (response.success) {
                         toolByPandaLv.loadingPage.processChange(i, len);
                         eleArray[i - 1].classList.add('finish');
-                        filesData.splice(i - 1, 1);
-                        eleArray.splice(i - 1, 1);
                     } else {
-                        filesData[i - 1].ele = eleArray[i - 1];
                         failArray.push({
                             no : i - 1,
                             errorCode: response.errorCode,
@@ -272,15 +269,26 @@
                     if (i === len) {//上传结束
                         //刷新input的file列表
                         upload.innerHTML = upload.innerHTML;
-                        if (failArray) {
+                        var len2 = failArray.length;
+                        if (len2) {
+                            if (len2 === len) {
+                                alert('全部图像上传失败');
+                            } else {
+                                alert('部分图像上传失败');
+                            }
+                            var arr = [];
+                            for (var j = 0; j < len; j += 1) {
+                                filesData[failArray[j].no].ele = eleArray[j];
+                                arr.push(filesData[failArray[j].no]);
+                            }
+                            filesData = arr;
                             refreshEle(true);
-                            alert('部分图像上传失败');
                         } else {
                             alert('上传成功');
                         }
                         toolByPandaLv.loadingPage.loadingPageClose();
                     } else {
-                        uploadFile_ajax(filesData[i], i, len, eleArray. failArray);
+                        uploadFile_ajax(filesData, i, len, eleArray, failArray);
                     }
                 },
                 error: function(){

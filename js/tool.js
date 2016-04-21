@@ -147,8 +147,8 @@ window.toolByPandaLv = {
                     var infoEle = loadingPageEle.querySelector('#page-loading-info'),
                         textEle = infoEle.children[1],
                         progressEle = infoEle.children[2];
-                    textEle.innerHTML = loadingPageStyle.text + '(' + now + '/' + max + ')';
-                    progressEle.children[0].style.width = now / max;
+                    textEle.innerHTML = '上传中' + '(' + now + '/' + max + ')';
+                    progressEle.children[0].style.width = now / max * 100 + '%';
                 },
                 loadingPageClose: function() {
                    loadingPageEle.style.display = 'none';
