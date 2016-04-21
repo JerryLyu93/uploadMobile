@@ -1,0 +1,144 @@
+
+*, body, p, a, ul, ol, li, div, h1, h2, h3, table, td, tr, button{
+    margin: 0;
+    padding: 0;
+    font-family: 'Helvetica Neue', Helvetica, 'Microsoft Yahei', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: #000;
+    background-color: transparent;
+    border: none;
+    /*��ֹѡ���ı�*/
+    -webkit-user-select: none;
+    -webkit-touch-callout:none;
+    -webkit-tap-highlight-color:rgba(0, 0 , 0 , 0);
+}
+ul, ol{
+    list-style: none outside none;
+}
+header {
+    position: relative;
+    background-color: #fafafa;
+    height: 50px;
+    text-align: center;
+    border-bottom: #e3e3e3 solid 1px;
+}
+header p {
+    line-height: 50px;
+    color:#666666;
+    font-size: 18px;
+}
+#deleteMode {
+    position: absolute;
+    top:0;
+    right: 0;
+    color:#999999;
+    height: 100%;
+    padding:5px 10px 5px 24px;
+    font-size: 14px;
+    background: url(../image/delete.png) no-repeat center left;
+    background-size: 20px;
+}
+#deleteMode img {
+    height: 20px;
+    margin:4px 4px 0 0;
+}
+section {
+    position: relative;
+    background-color: #f2f2f2;
+    padding:15px;
+}
+#board_upload {
+    overflow-x: hidden;
+    overflow-y: scroll;
+    width: auto;
+}
+.board_upload_div {
+    float:left;
+    margin:0 15px 15px 0;
+    background-color: #fff;
+    border-radius: 5px;
+    overflow: hidden;
+}
+.board_upload_div img.width{
+    width: 100%;
+}
+.board_upload_div img.height{
+    height: 100%;
+}
+#uploadDiv {
+    background: url(../image/addImage.png) no-repeat;
+    background-size: 100%;
+}
+#uploadDiv > input{
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+}
+.imageDiv{
+    position: relative;
+}
+
+.imageDiv.delete:before{
+    content: '';
+    display: block;
+    position: absolute;
+    background: url(../image/selected.png) no-repeat;
+    background-size: 100%;
+    width: 15%;
+    height: 15%;
+    bottom:6%;
+    right:6%;
+    z-index: 10;
+}
+.imageDiv.delete:after{
+    content: '';
+    display: block;
+    position: absolute;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    border-radius:5px;
+    background-color: rgba(255, 255, 255, 0.4);
+    z-index: 5;
+}
+.imageDiv.finish:before {
+    content: '上传完毕';
+    position: absolute;
+    top:50%;
+    left:50%;
+    margin-left:-30px;
+    margin-top: -10px;
+    font-size: 16px;
+    color: #fff;
+    z-index: 10;
+}
+.imageDiv.finish:after {
+    content: '';
+    display: block;
+    position: absolute;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    border-radius:5px;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 5;
+}
+#uploadButton {
+    margin-top:15px;
+    width: 100%;
+    background-color: #19aaf2;
+    border-radius: 4px;
+    text-align: center;
+    color:#fff;
+    font-size: 18px;
+    padding:13px 0;
+}
+#uploadButton.delete1 {
+    background-color: #bbbbbb;
+}
+#uploadButton.delete2 {
+    background-color: #d75a45;
+}
