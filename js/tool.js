@@ -139,7 +139,7 @@ window.toolByPandaLv = {
                     }
                     loadingPageEle.style.display = 'block';
                 },
-                processChange: function(now, max) {
+                progressChange: function(now, max) {
                     if (!now || !max) {
                         console.error('没有传入正确的值');
                         return
@@ -147,7 +147,7 @@ window.toolByPandaLv = {
                     var infoEle = loadingPageEle.querySelector('#page-loading-info'),
                         textEle = infoEle.children[1],
                         progressEle = infoEle.children[2];
-                    textEle.innerHTML = '上传中' + '(' + now + '/' + max + ')';
+                    textEle.innerHTML = '上传中' + ' (' + now + '/' + max + ')';
                     progressEle.children[0].style.width = now / max * 100 + '%';
                 },
                 loadingPageClose: function() {

@@ -37,9 +37,12 @@
                         return;
                     }
                     file.url = createObjectURL(file);
-                    file.no = filesData.length ? filesData[filesData.length - 1].no + 1 : 1;
-                    filesData.push(file);
-                    appendImgEle(file);
+                    file.no = filesData.length ? filesData[filesData.length - 1].file.no + 1 : 1;
+                    filesData.push({
+                        file: file,
+                        ele: null
+                    });
+                    appendImgEle(filesData[filesData.length - 1]);
                 }
             }
         }, false);
@@ -119,9 +122,9 @@
             imageDiv.style.width = size;
             imageDiv.style.height = size;
             imageDiv.className = 'board_upload_div imageDiv';
-            imageDiv.setAttribute('value', file.no);
+            imageDiv.setAttribute('value', file.file.no);
             var imageEle = document.createElement('img');
-            imageEle.setAttribute('src', file.url);
+            imageEle.setAttribute('src', file.file.url);
             imageDiv.appendChild(imageEle);
             if (board.lastChild == upload) {
                 board.insertBefore(imageDiv);
@@ -219,7 +222,7 @@
                     if (window.confirm('确认删除?')) {
                         deleteTrack.forEach(function(no){
                             for (var i = 0, l = filesData.length; i < l; i += 1) {
-                                if (filesData[i].no == no) {
+                                if (filesData[i].file.no == no) {
                                     cleanImgEle(filesData[i].ele);
                                     filesData.splice(i, 1);
                                     break;
@@ -235,21 +238,16 @@
                         len = filesData.length,
                         eleArray = [],
                         failArray = [];
-                    while (i < len) {
-                        eleArray.push(filesData[i].ele);
-                        delete (filesData[i].ele);
-                        i += 1;
-                    }
                     toolByPandaLv.loadingPage.loadingPageOpen({text:'上传中', mode:'progress'});
-                    uploadFile_ajax(filesData, 0, len, eleArray, failArray);
+                    uploadFile_ajax(filesData, 0, len, failArray);
                 } else {
                     alert('没有图片可以上传');
                 }
             }
         };
-        function uploadFile_ajax(filesData, i, len, eleArray, failArray) {
+        function uploadFile_ajax(filesData, i, len, failArray) {
             var data = new FormData();
-            data.append("file" + i, filesData[i]);
+            data.append("file" + i, filesData[i].file);
             toolByPandaLv.myAjax({
                 method: 'post',
                 url: '',
@@ -257,11 +255,12 @@
                 success: function(response) {
                     i += 1;
                     if (response.success) {
-                        toolByPandaLv.loadingPage.processChange(i, len);
-                        eleArray[i - 1].classList.add('finish');
+                        toolByPandaLv.loadingPage.progressChange(i, len);
+                        filesData[i - 1].ele.classList.add('finish');
                     } else {
                         failArray.push({
-                            no : i - 1,
+                            file: filesData[i - 1].file,
+                            ele: filesData[i - 1].ele,
                             errorCode: response.errorCode,
                             message: response.message
                         });
@@ -277,34 +276,28 @@
                                 alert('部分图像上传失败');
                             }
                             var arr = [];
-                            for (var j = 0; j < len; j += 1) {
-                                filesData[failArray[j].no].ele = eleArray[j];
-                                arr.push(filesData[failArray[j].no]);
-                            }
-                            filesData = arr;
+                            filesData = failArray;
                             refreshEle(true);
                         } else {
                             alert('上传成功');
                         }
                         toolByPandaLv.loadingPage.loadingPageClose();
                     } else {
-                        uploadFile_ajax(filesData, i, len, eleArray, failArray);
+                        uploadFile_ajax(filesData, i, len, failArray);
                     }
                 },
                 error: function(){
-                    var i = 0, len = filesData.length;
-                    while (i < len) {
-                        filesData[i].ele = eleArray[i];
-                        i += 1;
+                    var j = 0;
+                    while (j < i) {
+                        filesData.shift();
                     }
                     toolByPandaLv.loadingPage.loadingPageClose();
                     alert('上传错误');
                 },
                 timeout: function() {
-                    var i = 0, len = filesData.length;
-                    while (i < len) {
-                        filesData[i].ele = eleArray[i];
-                        i += 1;
+                    var j = 0;
+                    while (j < i) {
+                        filesData.shift();
                     }
                     toolByPandaLv.loadingPage.loadingPageClose();
                     alert('超时');
